@@ -925,7 +925,7 @@
         id: 'thirdQuarterMoon',
         emoji: '🌗',
         code: ':last_quarter_moon:',
-        name: 'third Quarter',
+        name: 'Third Quarter',
         weight: 1,
         css: 'wi-moon-third-quart'
     },
