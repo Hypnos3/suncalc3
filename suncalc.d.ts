@@ -33,9 +33,10 @@ export function addDeprecatedTimeName(alternameName: string, originalName: strin
  * @param {number} [height=0]  the observer height (in meters) relative to the horizon
  * @param {boolean} [addDeprecated=false] if true to times from timesDeprecated array will be added to the object
  * @param {boolean} [inUTC=false] defines if the calculation should be in utc or local time (default is local)
+ * @param {boolean} [dateAsIs=false] use the provided `dateValue` as is, instead of using non-TZ friendly logic to set the time part of the value to noon.
  * @return {ISunTimeList} result object of sunTime
  */
-export function getSunTimes(dateValue: number | Date, lat: number, lng: number, height?: number, addDeprecated?: boolean, inUTC?: boolean): ISunTimeList;
+export function getSunTimes(dateValue: number | Date, lat: number, lng: number, height?: number, addDeprecated?: boolean, inUTC?: boolean, dateAsIs?: boolean): ISunTimeList;
 /**
  * calculates the time at which the sun will have a given elevation angle when rising and when setting for a given date and latitude/longitude.
  * @param {number|Date} dateValue Date object or timestamp for calculating sun-times
@@ -106,9 +107,10 @@ export function getMoonData(dateValue: number | Date, lat: number, lng: number):
  * @param {number} lat latitude for calculating moon-times
  * @param {number} lng longitude for calculating moon-times
  * @param {boolean} [inUTC] defines if the calculation should be in utc or local time (default is local)
+ * @param {boolean} [dateAsIs=false] use the provided `dateValue` as is, instead of using non-TZ friendly logic to set the time part of the value to noon.
  * @return {IMoonTimes} result object of sunTime
  */
-export function getMoonTimes(dateValue: number | Date, lat: number, lng: number, inUTC?: boolean): IMoonTimes;
+export function getMoonTimes(dateValue: number | Date, lat: number, lng: number, inUTC?: boolean, dateAsIs?: boolean): IMoonTimes;
 /**
  * calculated the moon transit
  * @param {number|Date} rise rise time as Date object or timestamp for calculating moon-transit

@@ -541,9 +541,10 @@
      * @param {number} [height=0]  the observer height (in meters) relative to the horizon
      * @param {boolean} [addDeprecated=false] if true to times from timesDeprecated array will be added to the object
      * @param {boolean} [inUTC=false] defines if the calculation should be in utc or local time (default is local)
+     * @param {boolean} [dateAsIs=false] use the provided `dateValue` as is, instead of using non-TZ friendly logic to set the time part of the value to noon.
      * @return {ISunTimeList} result object of sunTime
      */
-    SunCalc.getSunTimes = function (dateValue, lat, lng, height, addDeprecated, inUTC) {
+    SunCalc.getSunTimes = function (dateValue, lat, lng, height, addDeprecated, inUTC, dateAsIs) {
         // console.log(`getSunTimes dateValue=${dateValue}  lat=${lat}, lng=${lng}, height={height}, noDeprecated=${noDeprecated}`);
         if (isNaN(lat)) {
             throw new Error('latitude missing');
@@ -551,12 +552,17 @@
         if (isNaN(lng)) {
             throw new Error('longitude missing');
         }
-        // @ts-ignore
-        const t = new Date(dateValue);
-        if (inUTC) {
-            t.setUTCHours(12, 0, 0, 0);
+
+        let t;
+        if (dateAsIs) {
+            t = dateValue;
         } else {
-            t.setHours(12, 0, 0, 0);
+            t = new Date(dateValue);
+            if (inUTC) {
+                t.setUTCHours(12, 0, 0, 0);
+            } else {
+                t.setHours(12, 0, 0, 0);
+            }
         }
 
         const lw = rad * -lng;
@@ -1062,20 +1068,26 @@
      * @param {number} lat latitude for calculating moon-times
      * @param {number} lng longitude for calculating moon-times
      * @param {boolean} [inUTC] defines if the calculation should be in utc or local time (default is local)
+     * @param {boolean} [dateAsIs=false] use the provided `dateValue` as is, instead of using non-TZ friendly logic to set the time part of the value to noon.
      * @return {IMoonTimes} result object of sunTime
      */
-    SunCalc.getMoonTimes = function (dateValue, lat, lng, inUTC) {
+    SunCalc.getMoonTimes = function (dateValue, lat, lng, inUTC, dateAsIs) {
         if (isNaN(lat)) {
             throw new Error('latitude missing');
         }
         if (isNaN(lng)) {
             throw new Error('longitude missing');
         }
-        const t = new Date(dateValue);
-        if (inUTC) {
-            t.setUTCHours(0, 0, 0, 0);
+        let t;
+        if (dateAsIs) {
+            t = dateValue;
         } else {
-            t.setHours(0, 0, 0, 0);
+            t = new Date(dateValue);
+            if (inUTC) {
+                t.setUTCHours(0, 0, 0, 0);
+            } else {
+                t.setHours(0, 0, 0, 0);
+            }
         }
         dateValue = t.valueOf();
         // console.log(`getMoonTimes lat=${lat} lng=${lng} dateValue=${dateValue} t=${t}`);
